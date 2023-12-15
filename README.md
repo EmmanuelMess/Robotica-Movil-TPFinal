@@ -6,18 +6,26 @@
 ### Run the setup script
 
 ```bash
-bash dev/setup.sh
+cd covins/docker
+
+./replicate.sh -c
+./replicate.sh -t ../../../raw-data/Agente1
+
+docker run -it --rm --net=host \
+        --volume "/home/emmanuelm/Rápido/Projects/GitHub/TPFinal/raw-data:/root/covins_ws/dataset" \
+        --workdir "/root/covins_ws/dataset" \
+        osrf/ros:melodic-desktop-bionic \
+        /bin/bash
 ```
 
 ```bash
-docker compose build
-docker compose up -d
-docker exec -it simulation_env bash
-source /opt/ros/humble/setup.bash
-. /usr/share/gazebo/setup.bash
-export TURTLEBOT3_MODEL=waffle
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/opt/ros/humble/share/turtlebot3_gazebo/models
-ros2 launch nav2_bringup tb3_simulation_launch.py headless:=False
+sudo apt update
+sudo apt install python3-pip
+python3 -m pip install rosbags
 
-ros2 launch slam_toolbox online_async_launch.py
+docker run -it --rm --net=host \
+        --volume "/home/emmanuelm/Rápido/Projects/GitHub/TPFinal/raw-data:/root/covins_ws/dataset" \
+        --workdir "/root/covins_ws/dataset" \
+        osrf/ros:humble-simulation-jammy \
+        /bin/bash
 ```
