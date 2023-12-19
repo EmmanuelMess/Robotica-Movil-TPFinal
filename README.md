@@ -8,6 +8,8 @@
 ```bash
 cd covins/docker
 
+make build
+
 ./replicate.sh -c
 ./replicate.sh -s ../covins_comm/config/config_comm.yaml ../covins_backend/config/config_backend.yaml
 ./replicate.sh -o ../covins_comm/config/config_comm.yaml ../orb_slam3/Examples/ROS/ORB_SLAM3/launch/launch_docker_ros_euroc.launch 0
