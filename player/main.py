@@ -1,25 +1,14 @@
 #! /usr/bin/python
-# Copyright (c) 2015, Rethink Robotics, Inc.
-
-# Using this CvBridge Tutorial for converting
-# ROS images to OpenCV2 images
-# http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImagesPython
-
-# Using this OpenCV2 tutorial for saving Images:
-# http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_gui/py_image_display/py_image_display.html
-
-# rospy for the subscriber
 import rospy
-# ROS Image message
 from sensor_msgs.msg import Image, Imu
 from cv_bridge import CvBridge, CvBridgeError
-# OpenCV2 for saving an image
 import cv2
 import glob
 import os
+import argparse
 
-def imu(imuData, imuTimes, startTimeCurrent):
-    publisher = rospy.Publisher('/imu0', Imu, queue_size=10)
+def imu(inputNumber, imuData, imuTimes, startTimeCurrent):
+    publisher = rospy.Publisher('/imu' + str(inputNumber), Imu, queue_size=10)
     
     for line, time in zip(imuData, imuTimes):      
         relativeCurrentTime = rospy.Time.now() - startTimeCurrent
@@ -40,9 +29,9 @@ def imu(imuData, imuTimes, startTimeCurrent):
         rospy.loginfo("Show imu " + str(line))
     
     
-def image(files, imageTimes, startTimeCurrent):  
+def image(inputNumber, files, imageTimes, startTimeCurrent):  
     bridge = CvBridge()
-    publisher = rospy.Publisher('/cam0/image_raw0', Image, queue_size=10)
+    publisher = rospy.Publisher('/cam0/image_raw' + str(inputNumber), Image, queue_size=10)
     
     firstFile = files[0]
     
@@ -61,12 +50,17 @@ def image(files, imageTimes, startTimeCurrent):
 
 
 def main():
-    rospy.init_node('image_publisher')
+    parser = argparse.ArgumentParser("RosPlayer")
+    parser.add_argument("input_number", help="The input number for this", type=int)
+    args = parser.parse_args()
+
+    rospy.init_node('ros_player')
     
-    imuData = [map(lambda l: float(l), line.split(",")) for line in open("/root/covins_ws/dataset/mav0/imu0/data.csv", "r")]
+    csvFile = open("/root/covins_ws/dataset/imu.csv", "r")
+    imuData = [map(lambda l: float(l), line.split(",")) for line in csvFile if line[0] != "#" ]
     imuTimes = [rospy.Time.from_sec(float(line[0]) * 1e-9) for line in imuData]
     
-    files = glob.glob("/root/covins_ws/dataset/mav0/cam0/data/*.png")
+    files = glob.glob("/root/covins_ws/dataset/images/*.png")
     files.sort() 
     
     imageTimes = []
@@ -81,8 +75,8 @@ def main():
     
     startTimeCurrent = rospy.Time.now()
     
-    rospy.Timer(rospy.Duration(0.01), lambda _: imu(imuData, imuTimes, startTimeCurrent), oneshot=True)
-    rospy.Timer(rospy.Duration(0.01), lambda _: image(files, imageTimes, startTimeCurrent), oneshot=True)
+    rospy.Timer(rospy.Duration(0.01), lambda _: imu(args.input_number, imuData, imuTimes, startTimeCurrent), oneshot=True)
+    rospy.Timer(rospy.Duration(0.01), lambda _: image(args.input_number, files, imageTimes, startTimeCurrent), oneshot=True)
     
     rospy.spin()
     
