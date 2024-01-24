@@ -54,7 +54,7 @@ def main():
     parser.add_argument("input_number", help="The input number for this", type=int)
     args = parser.parse_args()
 
-    rospy.init_node('ros_player')
+    rospy.init_node('ros_player_'+str(args.input_number))
     
     csvFile = open("/root/covins_ws/dataset/imu.csv", "r")
     imuData = [map(lambda l: float(l), line.split(",")) for line in csvFile if line[0] != "#" ]

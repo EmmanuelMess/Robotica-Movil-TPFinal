@@ -27,20 +27,27 @@ cd covins/docker
 ./replicate.sh -s ../covins_comm/config/config_comm.yaml ../covins_backend/config/config_backend.yaml
 ```
 
+En una nueva terminal:
+```bash
+cd covins/docker
+./replicate.sh -t ../../../codigo ../../../processed/Agente0
+export ROS_IP=127.0.0.102
+export ROS_MASTER_URI=...
+roslaunch src/covins/covins_backend/launch/tf.launch
+```
+
 #### Ejecutar un agente
 
 Reemplazar <AGENT_NUMBER> por el numero de agente
 
 ```bash
 cd covins/docker
+export ROS_MASTER_URI=...
 ./replicate.sh -o ../covins_comm/config/config_comm.yaml ../orb_slam3/Examples/ROS/ORB_SLAM3/launch/launch_docker_ros_euroc.launch <AGENT_NUMBER>
 ```
 
 ```bash
-./replicate.sh -t ../../../codigo ../../../processed/Agente<AGENT_NUMBER>
-cd /root/covins_ws/code/player
-python main.py <AGENT_NUMBER>
-
+export ROS_MASTER_URI=...
 ./replicate.sh -p ../../../codigo ../../../processed/Agente<AGENT_NUMBER> <AGENT_NUMBER>
 ```
 
@@ -49,10 +56,16 @@ python main.py <AGENT_NUMBER>
 Exportar el ROS_MASTER_URI (proveido en la terminal donde se levanto el roscore) y levantar rviz
 
 ```
+export ROS_IP=127.0.0.102
 export ROS_MASTER_URI=...
 rviz -d covins/covins_backend/config/covins.rviz
 ```
 
+#### Abrir una termina en el docker
+
+```bash
+./replicate.sh -t ../../../codigo ../../../processed/Agente<AGENT_NUMBER>
+```
 
 ### Replicar desde los datos crudos
 
