@@ -22,6 +22,8 @@ export ROS_MASTER_URI=http://localhost:11311/
 docker compose -f docker-compose.server.yml up
 ```
 
+Esperar a que el servidor levante.
+
 #### Ejecutar un agente
 
 Reemplazar <AGENT_NUMBER> por el numero de agente
@@ -33,6 +35,17 @@ export AGENT_NUM=<AGENT_NUMBER>
 export ROS_IP=127.0.0.102
 export ROS_MASTER_URI=http://localhost:11311/
 docker compose -f docker-compose.client.yml up
+```
+
+Esperar a que el cliente levante.
+
+En una nueva terminal:
+```bash
+cd covins/docker
+export AGENT_NUM=<AGENT_NUMBER>
+export ROS_IP=127.0.0.102
+export ROS_MASTER_URI=http://localhost:11311/
+docker compose -f docker-compose.data.yml up
 ```
 
 #### Ejecutar rviz
