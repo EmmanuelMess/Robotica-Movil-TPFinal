@@ -62,6 +62,7 @@ rviz -d covins/covins_backend/config/covins.rviz
 
 ```bash
 ./replicate.sh -t ../../../codigo ../../../processed/Agente<AGENT_NUMBER>
+export ROS_MASTER_URI=http://localhost:11311/
 ```
 
 ### Replicar desde los datos crudos

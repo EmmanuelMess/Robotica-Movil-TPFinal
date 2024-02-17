@@ -31,7 +31,8 @@ def imu(inputNumber, imuData, imuTimes, startTimeCurrent):
     
 def image(inputNumber, files, imageTimes, startTimeCurrent):  
     bridge = CvBridge()
-    publisher = rospy.Publisher('/cam0/image_raw' + str(inputNumber), Image, queue_size=10)
+    publisher1 = rospy.Publisher('/cam0/image_raw' + str(inputNumber), Image, queue_size=10)
+    publisher2 = rospy.Publisher('/cam1/image_raw' + str(inputNumber), Image, queue_size=10)
     
     firstFile = files[0]
     
@@ -44,7 +45,8 @@ def image(inputNumber, files, imageTimes, startTimeCurrent):
         
         image = cv2.imread(file)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        publisher.publish(bridge.cv2_to_imgmsg(image, 'mono8'))
+        publisher1.publish(bridge.cv2_to_imgmsg(image, 'mono8'))
+        publisher2.publish(bridge.cv2_to_imgmsg(image, 'mono8'))
         
         rospy.loginfo("Show image " + file)
 
