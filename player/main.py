@@ -17,14 +17,16 @@ def imu(inputNumber, imuData, imuTimes, startTimeCurrent):
         rospy.loginfo("Load imu " + str(time.to_sec()))
         rospy.sleep(deltaTime)
         
-        msg = Imu()
-        msg.angular_velocity.x = line[1]
-        msg.angular_velocity.y = line[2]
-        msg.angular_velocity.z = line[3]
-        msg.linear_acceleration.x = line[4]
-        msg.linear_acceleration.y = line[5]
-        msg.linear_acceleration.z = line[6]
-        publisher.publish(msg)
+        message = Imu()
+        message.header.stamp = time
+        message.header.frame_id = "imu0"
+        message.angular_velocity.x = line[1]
+        message.angular_velocity.y = line[2]
+        message.angular_velocity.z = line[3]
+        message.linear_acceleration.x = line[4]
+        message.linear_acceleration.y = line[5]
+        message.linear_acceleration.z = line[6]
+        publisher.publish(message)
         
         rospy.loginfo("Show imu " + str(line))
     
@@ -45,8 +47,15 @@ def image(inputNumber, files, imageTimes, startTimeCurrent):
         
         image = cv2.imread(file)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        publisher1.publish(bridge.cv2_to_imgmsg(image, 'mono8'))
-        publisher2.publish(bridge.cv2_to_imgmsg(image, 'mono8'))
+        
+        message = bridge.cv2_to_imgmsg(image, 'mono8')
+        message.header.stamp = time
+        message.header.frame_id = "cam0"
+        
+        publisher1.publish(message)
+        
+        message.header.frame_id = "cam1"
+        publisher2.publish(message)
         
         rospy.loginfo("Show image " + file)
 
@@ -71,7 +80,7 @@ def main():
         time = rospy.Time.from_sec(float(name) * 1e-9)
         imageTimes.append(time)
     
-    startTime = imageTimes[0]
+    startTime = min(imageTimes[0], imuTimes[0])
     imuTimes = list(map(lambda time: time - startTime, imuTimes))
     imageTimes = list(map(lambda time: time - startTime, imageTimes))
     
