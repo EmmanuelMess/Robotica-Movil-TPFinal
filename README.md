@@ -9,7 +9,12 @@
 cd covins/docker
 
 make build
+
+cd VINS-COVINS-adaptation/docker
+
+make build
 ```
+
 
 ### Ejecutar servidor y agentes
 
@@ -30,11 +35,10 @@ Reemplazar <AGENT_NUMBER> por el numero de agente
 
 En una nueva terminal:
 ```bash
-cd covins/docker
-export AGENT_NUM=<AGENT_NUMBER>
+cd VINS-COVINS-adaptation/docker
 export ROS_IP=127.0.0.102
 export ROS_MASTER_URI=http://localhost:11311/
-docker compose -f docker-compose.client.yml up
+./run_vins_frontend_euroc.sh <AGENT_NUMBER>
 ```
 
 Esperar a que el cliente levante.
