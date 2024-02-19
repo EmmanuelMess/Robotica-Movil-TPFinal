@@ -34,7 +34,6 @@ def imu(inputNumber, imuData, imuTimes, startTimeCurrent):
 def image(inputNumber, files, imageTimes, startTimeCurrent):  
     bridge = CvBridge()
     publisher1 = rospy.Publisher('/cam0/image_raw' + str(inputNumber), Image, queue_size=10)
-    publisher2 = rospy.Publisher('/cam1/image_raw' + str(inputNumber), Image, queue_size=10)
     
     firstFile = files[0]
     
@@ -55,7 +54,6 @@ def image(inputNumber, files, imageTimes, startTimeCurrent):
         publisher1.publish(message)
         
         message.header.frame_id = "cam1"
-        publisher2.publish(message)
         
         rospy.loginfo("Show image " + file)
 
