@@ -10,15 +10,16 @@ import argparse
 def imu(inputNumber, imuData, imuTimes, startTimeCurrent):
     publisher = rospy.Publisher('/imu' + str(inputNumber), Imu, queue_size=10)
     
-    for line, time in zip(imuData, imuTimes):      
-        relativeCurrentTime = rospy.Time.now() - startTimeCurrent
+    for line, time in zip(imuData, imuTimes):  
+        now = rospy.Time.now()    
+        relativeCurrentTime = now - startTimeCurrent
         deltaTime = time - relativeCurrentTime
     
         rospy.loginfo("Load imu " + str(time.to_sec()))
         rospy.sleep(deltaTime)
         
         message = Imu()
-        message.header.stamp = time
+        message.header.stamp = startTimeCurrent + time
         message.header.frame_id = "imu0"
         message.angular_velocity.x = line[1]
         message.angular_velocity.y = line[2]
@@ -38,7 +39,8 @@ def image(inputNumber, files, imageTimes, startTimeCurrent):
     firstFile = files[0]
     
     for file, time in zip(files, imageTimes):
-        relativeCurrentTime = rospy.Time.now() - startTimeCurrent
+        now = rospy.Time.now()    
+        relativeCurrentTime = now - startTimeCurrent
         deltaTime = time - relativeCurrentTime
         
         rospy.loginfo("Load image " + str(time.to_sec()))
@@ -48,12 +50,10 @@ def image(inputNumber, files, imageTimes, startTimeCurrent):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
         message = bridge.cv2_to_imgmsg(image, 'mono8')
-        message.header.stamp = time
+        message.header.stamp = startTimeCurrent + time
         message.header.frame_id = "cam0"
         
         publisher1.publish(message)
-        
-        message.header.frame_id = "cam1"
         
         rospy.loginfo("Show image " + file)
 
