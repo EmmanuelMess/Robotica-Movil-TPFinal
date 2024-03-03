@@ -19,7 +19,7 @@ def imu(inputNumber, imuData, imuTimes, startTimeCurrent):
         rospy.sleep(deltaTime)
         
         message = Imu()
-        message.header.stamp = startTimeCurrent + time
+        message.header.stamp = startTimeCurrent + time #rospy.Time.now()# TODO fix: startTimeCurrent + time
         message.header.frame_id = "imu0"
         message.angular_velocity.x = line[1]
         message.angular_velocity.y = line[2]
@@ -50,7 +50,7 @@ def image(inputNumber, files, imageTimes, startTimeCurrent):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
         message = bridge.cv2_to_imgmsg(image, 'mono8')
-        message.header.stamp = startTimeCurrent + time
+        message.header.stamp = startTimeCurrent + time #rospy.Time.now()# TODO fix: startTimeCurrent + time
         message.header.frame_id = "cam0"
         
         publisher1.publish(message)
