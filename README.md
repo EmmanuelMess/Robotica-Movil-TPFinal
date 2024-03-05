@@ -6,11 +6,7 @@
 ### Construir
 
 ```bash
-cd covins/docker
-
-make build
-
-cd VINS-COVINS-adaptation/docker
+cd ccm_slam/docker
 
 make build
 ```
@@ -22,7 +18,7 @@ make build
 
 En una nueva terminal:
 ```bash
-cd covins/docker
+cd ccm_slam/docker
 export ROS_MASTER_URI=http://localhost:11311/
 docker compose -f docker-compose.server.yml up
 ```
@@ -33,22 +29,11 @@ Esperar a que el servidor levante.
 
 Reemplazar <AGENT_NUMBER> por el numero de agente
 
-
-##### VINS-FUSION
 En una nueva terminal:
 ```bash
-cd VINS-COVINS-adaptation/docker
-export ROS_IP=127.0.0.102
+cd ccm_slam/docker
 export ROS_MASTER_URI=http://localhost:11311/
-./run_vins_frontend_realsense_replication.sh <AGENT_NUMBER>
-```
-
-##### ORB-SLAM3
-En una nueva terminal:
-```bash
-cd covins/docker
-export ROS_IP=127.0.0.102
-export ROS_MASTER_URI=http://localhost:11311/
+export AGENT_NUM=<AGENT_NUMBER>
 docker compose -f docker-compose.client.yml up
 ```
 
@@ -58,7 +43,6 @@ En una nueva terminal:
 ```bash
 cd covins/docker
 export AGENT_NUM=<AGENT_NUMBER>
-export ROS_IP=127.0.0.102
 export ROS_MASTER_URI=http://localhost:11311/
 docker compose -f docker-compose.data.yml up
 ```

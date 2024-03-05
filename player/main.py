@@ -61,15 +61,16 @@ def image(inputNumber, files, imageTimes, startTimeCurrent):
 def main():
     parser = argparse.ArgumentParser("RosPlayer")
     parser.add_argument("input_number", help="The input number for this", type=int)
+    parser.add_argument("dataset", help="The folder to process", type=str)
     args = parser.parse_args()
 
     rospy.init_node('ros_player_'+str(args.input_number))
     
-    csvFile = open("/root/covins_ws/dataset/imu.csv", "r")
-    imuData = [map(lambda l: float(l), line.split(",")) for line in csvFile if line[0] != "#" ]
+    csvFile = open(f"{args.dataset}/imu.csv", "r")
+    imuData = [list(map(lambda l: float(l), line.split(","))) for line in csvFile if line[0] != "#" ]
     imuTimes = [rospy.Time.from_sec(float(line[0]) * 1e-9) for line in imuData]
     
-    files = glob.glob("/root/covins_ws/dataset/images/*.png")
+    files = glob.glob(f"{args.dataset}/images/*.png")
     files.sort() 
     
     imageTimes = []
