@@ -1,9 +1,3 @@
-[submodule "covins"]
-	path = covins
-	url = https://github.com/EmmanuelMess/covins
-[submodule "VINS-COVINS-adaptation"]
-	path = VINS-COVINS-adaptation
-	url = https://github.com/manthan99/VINS-COVINS-adaptation.git
 [submodule "ccm_slam"]
 	path = ccm_slam
 	url = https://github.com/VIS4ROB-lab/ccm_slam.git
