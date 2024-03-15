@@ -54,14 +54,7 @@ Exportar el ROS_MASTER_URI (proveido en la terminal donde se levanto el roscore)
 ```
 export ROS_IP=127.0.0.102
 export ROS_MASTER_URI=http://localhost:11311/
-rviz -d covins/covins_backend/config/covins.rviz
-```
-
-#### Abrir una termina en el docker
-
-```bash
-./replicate.sh -t ../../../codigo ../../../processed/Agente<AGENT_NUMBER>
-export ROS_MASTER_URI=http://localhost:11311/
+rviz -d ccm_slam/cslam/conf/rviz/ccmslam.rviz
 ```
 
 ### Replicar desde los datos crudos
