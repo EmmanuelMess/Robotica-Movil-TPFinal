@@ -34,7 +34,7 @@ En una nueva terminal:
 cd ccm_slam/docker
 export ROS_MASTER_URI=http://localhost:11311/
 export AGENT_NUM=<AGENT_NUMBER>
-docker compose -f docker-compose.client.yml up
+docker compose -p agent_${AGENT_NUM} -f docker-compose.client.yml up
 ```
 
 Esperar a que el cliente levante.
@@ -44,7 +44,7 @@ En una nueva terminal:
 cd covins/docker
 export AGENT_NUM=<AGENT_NUMBER>
 export ROS_MASTER_URI=http://localhost:11311/
-docker compose -f docker-compose.data.yml up
+docker compose -p agent_${AGENT_NUM} -f docker-compose.data.yml up
 ```
 
 #### Ejecutar rviz
