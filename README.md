@@ -11,6 +11,7 @@ cd ccm_slam/docker
 make build
 ```
 
+Copiar los datos de rosbags.7z a la carpeta padre del repo.
 
 ### Ejecutar servidor y agentes
 
@@ -55,28 +56,4 @@ Exportar el ROS_MASTER_URI (proveido en la terminal donde se levanto el roscore)
 export ROS_IP=127.0.0.102
 export ROS_MASTER_URI=http://localhost:11311/
 rviz -d ccm_slam/cslam/conf/rviz/ccmslam.rviz
-```
-
-### Replicar desde los datos crudos
-
-#### Procesado de datos
-
-```
-docker run -it --rm --net=host \
-        --volume "/home/emmanuelm/Rápido/Projects/GitHub/TPFinal/raw-data:/root/covins_ws/dataset" \
-        --workdir "/root/covins_ws/dataset" \
-        osrf/ros:melodic-desktop-bionic \
-        /bin/bash
-```
-
-```bash
-docker run -it --rm --net=host \
-        --volume "/home/emmanuelm/Rápido/Projects/GitHub/TPFinal/raw-data:/root/covins_ws/dataset" \
-        --workdir "/root/covins_ws/dataset" \
-        osrf/ros:humble-simulation-jammy \
-        /bin/bash
-
-sudo apt update
-sudo apt install python3-pip
-python3 -m pip install rosbags==0.9.19
 ```
