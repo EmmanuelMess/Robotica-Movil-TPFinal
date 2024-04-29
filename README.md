@@ -53,7 +53,6 @@ docker compose -p agent_${AGENT_NUM} -f docker-compose.data.yml up
 Exportar el ROS_MASTER_URI (proveido en la terminal donde se levanto el roscore) y levantar rviz
 
 ```
-export ROS_IP=127.0.0.102
 export ROS_MASTER_URI=http://localhost:11311/
 rviz -d ccm_slam/cslam/conf/rviz/ccmslam.rviz
 ```
